@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>MovieGuessr</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/css/lightbox.min.css">
+    <link rel="stylesheet" href="../../static/css/Lightbox-Gallery.css">
+    <link rel="stylesheet" href="../../static/css/Navigation-with-Button.css">
+    <link rel="stylesheet" href="../../static/css/styles.css">
+</head>
+
+<body>
+    <div id="postername">
+        <div id="infobar">
+            <h3 id="genreDisplay">Adventure</h3>
+            <h3 id="timer">10</h3></div>
+        <div id="posterHeading"><h1 id="tophead"><span style="text-decoration: underline;">Heading</span></h1></div>
+        </div>
+    <div id="main">
+        <div id="top">
+
+            <ul class="list-unstyled">
+                <li><i class="fa fa-star"></i>&nbsp;Player 1 - 10 Points</li>
+                <li>Item 2</li>
+            </ul>
+        </div>
+        <div id="othertop">
+            <textarea id="chat-log"cols="25" rows="5" readonly></textarea>
+            <input id="chat-message-input" type="text" />
+            <button id="chat-message-submit" class="btn btn-primary" type="button">Button</button></div>
+        <div id="tempPoster"><img id="gamePoster"></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="../../files/assets/js/test.js"></script>
+    <script src="../../files/assets/js/game.js"></script>
+<script>
+    var roomName = {{ room_name_json }};
+var chatSocket = new WebSocket(
+    'ws://' + window.location.host +
+    '/ws/game/' + roomName + '/');
+
+chatSocket.onmessage = function(e) {
+    var data = JSON.parse(e.data);
+        var username = data['username'];
+        var message = data['message'];
+        document.querySelector('#chat-log').value += (username + message + '\n');
+        document.querySelector('#chat-log').scrollTop = document.querySelector('#chat-log').scrollHeight;
+};
+
+chatSocket.onclose = function(e) {
+    console.error('Chat socket closed unexpectedly');
+};
+
+document.querySelector('#chat-message-input').focus();
+document.querySelector('#chat-message-input').onkeyup = function(e) {
+    if (e.keyCode === 13) {  // enter, return
+        document.querySelector('#chat-message-submit').click();
+    }
+};
+
+document.querySelector('#chat-message-submit').onclick = function(e) {
+    var messageInputDom = document.querySelector('#chat-message-input');
+    var message = messageInputDom.value;
+    chatSocket.send(JSON.stringify({
+        'message': message
+    }));
+
+    messageInputDom.value = '';
+};
+</script>
+<script>
+    var TMDB_KEY = "261dcd1c24069eadca07f9d2174be25c";
+    var genre= 12;
+    var movieLink;
+    var page = Math.floor(Math.random() * 10) + 1;
+    var randMov = Math.floor(Math.random() * 19) + 1;
+    var fetchreq = fetch('https://api.themoviedb.org/3/discover/movie?api_key=' + TMDB_KEY + '&with_genres=' + genre + '&sort_by=popularity.desc&language=en-US&region=US&page=' + page)
+    fetchreq.then(response => response.json()).then(json => document.getElementById("gamePoster").alt = "http://image.tmdb.org/t/p/w500/" + (json.results[randMov].poster_path));
+    var url = "https://vision.googleapis.com/v1/images:annotate?key=AIzaSyBdPE7xtt21hbcwDvpNu3MgsVJOAE6fp0E";
+    var data = GOOGL_POST ={
+
+  "requests":[
+    {
+      "image":{
+        "source":{
+          "imageUri":
+            document.getElementById("gamePoster").alt
+        }
+      },
+      "features":[
+        {
+          "maxResults":5,
+          "type":"DOCUMENT_TEXT_DETECTION"
+        }
+      ]
+    }
+  ]
+};
+
+var optional = {
+    headers:{
+        "content-type": 'application/json;charset=utf-8'
+    },
+    body:data,
+    method:"POST"
+};
+var textBoxes;
+fetch(url,optional).then(response => response.json()).then(stuff => textBoxes = stuff).then(console.log(textBoxes));
+    var poster = document.getElementById("gamePoster").alt;
+    var ctx = poster.getContext("2d");
+    var i;
+textBoxes.forEach(function (i) {
+    var x1, y1 = i["boundingPoly"]["vertices"][0].values();
+    var x2, y2 = i["boundingPoly"]["vertices"][2].values();
+    ctx.rect(x1, y1, x2, y2);
+    ctx.fill();
+    i = i + 1
+});
+</script>
+</body>
+
+</html>

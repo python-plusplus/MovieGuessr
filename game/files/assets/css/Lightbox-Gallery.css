@@ -1,0 +1,109 @@
+.photo-gallery {
+  color: #313437;
+  background-color: #fff;
+}
+
+.photo-gallery p {
+  color: #7d8285;
+}
+
+.photo-gallery h2 {
+  font-weight: bold;
+  margin-bottom: 40px;
+  padding-top: 40px;
+  color: inherit;
+}
+
+@media (max-width:767px) {
+  .photo-gallery h2 {
+    margin-bottom: 25px;
+    padding-top: 25px;
+    font-size: 24px;
+  }
+}
+
+.photo-gallery .intro {
+  font-size: 16px;
+  max-width: 500px;
+  margin: 0 auto 40px;
+}
+
+.photo-gallery .intro p {
+  margin-bottom: 0;
+}
+
+.photo-gallery .photos {
+  padding-bottom: 20px;
+}
+
+.photo-gallery .item {
+  padding-bottom: 30px;
+}
+
+#join-Game {
+  text-align: center;
+}
+
+#create-Game {
+  text-align: center;
+}
+
+.h1, h1 {
+  padding: 5%;
+}
+
+#genreSelect {
+}
+
+#create-button {
+  text-align: center;
+}
+
+#create-button {
+  padding-top: 5%;
+}
+
+#createGame {
+  color: #dbdcb7;
+  background-color: #2c4040;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show > .btn-primary.dropdown-toggle:focus {
+  box-shadow: 0 0 0 .2rem rgba(33,47,47,.5);
+}
+
+[type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled) {
+  color: #dbdcb7;
+  background-color: #2c4040;
+}
+
+#joinGame: hover {
+  color: rgb(32,47,47);
+}
+
+.btn-primary:hover {
+  color: #dbdcb7;
+  background-color: #1f2c2c;
+  border-color: #1f2c2c;
+}
+
+#createGame:hover {
+  color: #dbdcb7;
+  background-color: #1f2c2c;
+  border-color: #1f2c2c;
+}
+
+div {
+}
+
+#postername {
+}
+
+#title {
+  color: white;
+}
+
+#tophead {
+  padding: 2%;
+}
+
